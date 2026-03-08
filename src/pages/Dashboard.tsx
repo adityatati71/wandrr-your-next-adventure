@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import MaterialIcon from "@/components/MaterialIcon";
 import WandrLogo from "@/components/WandrLogo";
@@ -11,9 +11,9 @@ import memory3 from "@/assets/memory3.jpg";
 import memory4 from "@/assets/memory4.jpg";
 
 const trips = [
-  { title: "Amalfi Coast Escape", dates: "Nov 12 - Nov 18, 2024", status: "Confirmed", image: amalfiImg },
-  { title: "Kyoto Zen Retreat", dates: "Mar 05 - Mar 15, 2025", status: "Planning", image: kyotoImg },
-  { title: "Santorini Sunsets", dates: "Jun 20 - Jun 27, 2025", status: "Confirmed", image: santoriniImg },
+  { title: "Amalfi Coast Escape", dates: "Nov 12 - Nov 18, 2024", status: "Confirmed", image: amalfiImg, slug: "amalfi-coast-escape" },
+  { title: "Kyoto Zen Retreat", dates: "Mar 05 - Mar 15, 2025", status: "Planning", image: kyotoImg, slug: "kyoto-zen-retreat" },
+  { title: "Santorini Sunsets", dates: "Jun 20 - Jun 27, 2025", status: "Confirmed", image: santoriniImg, slug: "santorini-sunsets" },
 ];
 
 const memories = [memory1, memory2, memory3, memory4];
@@ -27,6 +27,30 @@ const navItems = [
 
 const Dashboard = () => {
   const [activeNav, setActiveNav] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 10);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    el.addEventListener("scroll", checkScroll, { passive: true });
+    return () => el.removeEventListener("scroll", checkScroll);
+  }, []);
+
+  const scroll = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === "left" ? -280 : 280, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -56,50 +80,114 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Upcoming Trips */}
+        {/* Upcoming Trips — Premium Horizontal Carousel */}
         <section>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-foreground">Upcoming Trips</h2>
             <span className="text-xs text-primary cursor-pointer hover:underline">See all</span>
           </div>
-          <div className="space-y-3">
-            {trips.map((trip) => (
-              <div key={trip.title} className="glass rounded-2xl p-3 flex items-center gap-4 hover:bg-card/80 transition-colors cursor-pointer">
-                <img src={trip.image} alt={trip.title} className="w-16 h-16 rounded-xl object-cover" />
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${trip.status === "Confirmed" ? "bg-success/20 text-success" : "bg-accent/20 text-accent"}`}>
+
+          <div className="relative group">
+            {/* Left blur fade + arrow */}
+            <div className={`absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none transition-opacity duration-300 ${canScrollLeft ? "opacity-100" : "opacity-0"}`} />
+            {canScrollLeft && (
+              <button
+                onClick={() => scroll("left")}
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full glass-strong flex items-center justify-center hover:bg-card/90 transition-all opacity-0 group-hover:opacity-100 shadow-lg"
+              >
+                <MaterialIcon icon="chevron_left" size={22} className="text-foreground" />
+              </button>
+            )}
+
+            {/* Scrollable container */}
+            <div
+              ref={scrollRef}
+              className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory -mx-4 px-4 py-1"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {trips.map((trip) => (
+                <Link
+                  key={trip.slug}
+                  to={`/trip/${trip.slug}`}
+                  className="snap-start shrink-0 w-[260px] rounded-2xl overflow-hidden glass group/card hover:scale-[1.02] transition-transform duration-300 cursor-pointer"
+                >
+                  <div className="relative h-40 overflow-hidden">
+                    <img
+                      src={trip.image}
+                      alt={trip.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+                    <span className={`absolute top-3 left-3 text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-md ${
+                      trip.status === "Confirmed" ? "bg-success/30 text-success" : "bg-accent/30 text-accent"
+                    }`}>
                       {trip.status}
                     </span>
                   </div>
-                  <p className="text-sm font-semibold text-foreground mt-1 truncate">{trip.title}</p>
-                  <p className="text-xs text-muted-foreground">{trip.dates}</p>
+                  <div className="p-4">
+                    <p className="text-sm font-semibold text-foreground truncate">{trip.title}</p>
+                    <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                      <MaterialIcon icon="calendar_month" size={13} /> {trip.dates}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+
+              {/* Add trip card */}
+              <div className="snap-start shrink-0 w-[260px] rounded-2xl overflow-hidden border-2 border-dashed border-border hover:border-primary/40 transition-colors flex flex-col items-center justify-center cursor-pointer min-h-[220px]">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                  <MaterialIcon icon="add" size={28} className="text-primary" />
                 </div>
+                <p className="text-sm font-semibold text-foreground">Add New Trip</p>
+                <p className="text-xs text-muted-foreground mt-1">Plan your next adventure</p>
               </div>
-            ))}
+            </div>
+
+            {/* Right blur fade + arrow */}
+            <div className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none transition-opacity duration-300 ${canScrollRight ? "opacity-100" : "opacity-0"}`} />
+            {canScrollRight && (
+              <button
+                onClick={() => scroll("right")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full glass-strong flex items-center justify-center hover:bg-card/90 transition-all opacity-0 group-hover:opacity-100 shadow-lg"
+              >
+                <MaterialIcon icon="chevron_right" size={22} className="text-foreground" />
+              </button>
+            )}
           </div>
         </section>
 
         {/* Expense Splitter */}
-        <section className="glass rounded-2xl p-5">
-          <div className="flex items-center gap-3 mb-4">
-            <MaterialIcon icon="payments" className="text-primary" size={22} />
-            <h3 className="font-semibold text-foreground">Expense Splitter</h3>
-          </div>
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <p className="text-xs text-muted-foreground">Total Expenses</p>
-              <p className="text-2xl font-bold text-foreground">$3,420.50</p>
+        <Link to="/splitter" className="block">
+          <section className="glass rounded-2xl p-5 hover:bg-card/80 transition-colors">
+            <div className="flex items-center gap-3 mb-4">
+              <MaterialIcon icon="payments" className="text-primary" size={22} />
+              <h3 className="font-semibold text-foreground">Expense Splitter</h3>
+              <MaterialIcon icon="chevron_right" size={18} className="text-muted-foreground ml-auto" />
             </div>
-            <div className="text-right">
-              <p className="text-xs text-muted-foreground">Per person:</p>
-              <p className="text-lg font-semibold text-foreground">$855.12</p>
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-xs text-muted-foreground">Total Expenses</p>
+                <p className="text-2xl font-bold text-foreground">$2,670.50</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground">Per person:</p>
+                <p className="text-lg font-semibold text-primary">$667.62</p>
+              </div>
             </div>
-          </div>
-          <button className="w-full bg-secondary hover:bg-secondary/80 rounded-xl py-2.5 text-sm font-medium text-secondary-foreground transition-colors">
-            View Full Breakdown
-          </button>
-        </section>
+            <div className="flex -space-x-2">
+              {["A", "S", "M", "E"].map((initial, i) => (
+                <div key={i} className={`w-7 h-7 rounded-full border-2 border-card flex items-center justify-center text-[10px] font-bold text-primary-foreground ${
+                  ["bg-primary", "bg-accent", "bg-success", "bg-destructive"][i]
+                }`}>
+                  {initial}
+                </div>
+              ))}
+              <div className="w-7 h-7 rounded-full border-2 border-card bg-secondary flex items-center justify-center text-[10px] text-muted-foreground">
+                +1
+              </div>
+            </div>
+          </section>
+        </Link>
 
         {/* Balance */}
         <div className="glass rounded-2xl p-5 flex items-center justify-between">
@@ -111,31 +199,6 @@ const Dashboard = () => {
             </div>
           </div>
           <span className="text-xs text-muted-foreground">You're owed money!</span>
-        </div>
-
-        {/* Add Custom Trip */}
-        <div className="glass rounded-2xl p-5 border-2 border-dashed border-border hover:border-primary/40 transition-colors cursor-pointer">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <MaterialIcon icon="add" className="text-primary" size={24} />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-foreground">Add Custom Trip</p>
-              <p className="text-xs text-muted-foreground">Start your next journey from scratch</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            {[
-              { icon: "beach_access", label: "Beach" },
-              { icon: "terrain", label: "Mountain" },
-              { icon: "apartment", label: "City" },
-            ].map((tag) => (
-              <span key={tag.label} className="flex items-center gap-1 bg-secondary rounded-full px-3 py-1.5 text-xs text-secondary-foreground">
-                <MaterialIcon icon={tag.icon} size={14} />
-                {tag.label}
-              </span>
-            ))}
-          </div>
         </div>
 
         {/* Shared Memories */}

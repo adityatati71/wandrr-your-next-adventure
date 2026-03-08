@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
+import TripDetail from "./pages/TripDetail";
+import ExpenseSplitter from "./pages/ExpenseSplitter";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/trip/:slug" element={<TripDetail />} />
+          <Route path="/splitter" element={<ExpenseSplitter />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
