@@ -5,9 +5,11 @@ const WandrLogo = ({ size = "default" }: { size?: "small" | "default" | "large" 
   const textClass = size === "large" ? "text-2xl" : size === "small" ? "text-lg" : "text-xl";
 
   return (
-    <div className="flex items-center gap-2">
-      <MaterialIcon icon="explore" filled className="text-primary" size={iconSize} />
-      <span className={`${textClass} font-bold tracking-tight text-foreground`}>Wandrr</span>
+    <div className="flex items-center gap-2.5">
+      <div className={`${size === "large" ? "w-10 h-10" : size === "small" ? "w-7 h-7" : "w-8 h-8"} rounded-xl bg-primary/20 flex items-center justify-center`}>
+        <MaterialIcon icon="explore" filled className="text-primary" size={iconSize} />
+      </div>
+      <span className={`${textClass} font-display font-bold tracking-tight gradient-text`}>Wandrr</span>
     </div>
   );
 };

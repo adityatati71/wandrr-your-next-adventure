@@ -37,17 +37,17 @@ const ExpenseSplitter = () => {
   const perPerson = total / members.length;
 
   return (
-    <div className="min-h-screen bg-background pb-8">
+    <div className="min-h-screen bg-background pb-8 grain">
       {/* Header */}
       <header className="sticky top-0 z-50 glass-strong px-4 py-3 flex items-center gap-3">
-        <Link to="/dashboard" className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+        <Link to="/dashboard" className="w-10 h-10 rounded-2xl glass flex items-center justify-center">
           <MaterialIcon icon="arrow_back" size={20} className="text-foreground" />
         </Link>
         <div className="flex-1">
-          <h1 className="text-base font-semibold text-foreground">Expense Splitter</h1>
-          <p className="text-xs text-muted-foreground">Amalfi Coast Escape</p>
+          <h1 className="text-base font-display font-semibold text-foreground">expense splitter 💸</h1>
+          <p className="text-xs text-muted-foreground">amalfi coast escape</p>
         </div>
-        <button className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+        <button className="w-10 h-10 rounded-2xl bg-primary/15 flex items-center justify-center hover:glow-primary transition-all">
           <MaterialIcon icon="add" size={20} className="text-primary" />
         </button>
       </header>
@@ -55,14 +55,14 @@ const ExpenseSplitter = () => {
       <main className="px-4 py-6 max-w-lg mx-auto space-y-6 animate-fade-in">
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="glass rounded-2xl p-4">
-            <p className="text-xs text-muted-foreground mb-1">Total Expenses</p>
-            <p className="text-2xl font-bold text-foreground">${total.toFixed(2)}</p>
+          <div className="glass rounded-3xl p-4 neon-border">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">total expenses</p>
+            <p className="text-2xl font-display font-bold text-foreground">${total.toFixed(2)}</p>
             <p className="text-[10px] text-muted-foreground mt-1">{expenses.length} transactions</p>
           </div>
-          <div className="glass rounded-2xl p-4">
-            <p className="text-xs text-muted-foreground mb-1">Per Person</p>
-            <p className="text-2xl font-bold text-primary">${perPerson.toFixed(2)}</p>
+          <div className="glass rounded-3xl p-4 neon-border">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">per person</p>
+            <p className="text-2xl font-display font-bold text-primary">${perPerson.toFixed(2)}</p>
             <p className="text-[10px] text-muted-foreground mt-1">{members.length} members</p>
           </div>
         </div>
@@ -70,8 +70,8 @@ const ExpenseSplitter = () => {
         {/* Members Row */}
         <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
           {members.map((m) => (
-            <div key={m.name} className="glass rounded-2xl p-3 min-w-[120px] text-center shrink-0">
-              <div className={`w-10 h-10 rounded-full ${m.color} flex items-center justify-center text-sm font-bold text-primary-foreground mx-auto mb-2`}>
+            <div key={m.name} className="glass rounded-3xl p-3 min-w-[120px] text-center shrink-0 neon-border">
+              <div className={`w-10 h-10 rounded-xl ${m.color} flex items-center justify-center text-sm font-bold text-primary-foreground mx-auto mb-2`}>
                 {m.avatar}
               </div>
               <p className="text-xs font-semibold text-foreground">{m.name}</p>
@@ -83,13 +83,13 @@ const ExpenseSplitter = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-secondary rounded-xl p-1">
+        <div className="flex gap-1 glass rounded-2xl p-1">
           {(["expenses", "balances", "settle"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all ${
-                activeTab === tab ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+              className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                activeTab === tab ? "btn-primary-gradient" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
