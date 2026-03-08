@@ -83,13 +83,13 @@ const ExpenseSplitter = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-secondary rounded-xl p-1">
+        <div className="flex gap-1 glass rounded-2xl p-1">
           {(["expenses", "balances", "settle"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all ${
-                activeTab === tab ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+              className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                activeTab === tab ? "btn-primary-gradient" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
