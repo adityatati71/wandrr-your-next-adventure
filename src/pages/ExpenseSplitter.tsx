@@ -55,14 +55,14 @@ const ExpenseSplitter = () => {
       <main className="px-4 py-6 max-w-lg mx-auto space-y-6 animate-fade-in">
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="glass rounded-2xl p-4">
-            <p className="text-xs text-muted-foreground mb-1">Total Expenses</p>
-            <p className="text-2xl font-bold text-foreground">${total.toFixed(2)}</p>
+          <div className="glass rounded-3xl p-4 neon-border">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">total expenses</p>
+            <p className="text-2xl font-display font-bold text-foreground">${total.toFixed(2)}</p>
             <p className="text-[10px] text-muted-foreground mt-1">{expenses.length} transactions</p>
           </div>
-          <div className="glass rounded-2xl p-4">
-            <p className="text-xs text-muted-foreground mb-1">Per Person</p>
-            <p className="text-2xl font-bold text-primary">${perPerson.toFixed(2)}</p>
+          <div className="glass rounded-3xl p-4 neon-border">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">per person</p>
+            <p className="text-2xl font-display font-bold text-primary">${perPerson.toFixed(2)}</p>
             <p className="text-[10px] text-muted-foreground mt-1">{members.length} members</p>
           </div>
         </div>
