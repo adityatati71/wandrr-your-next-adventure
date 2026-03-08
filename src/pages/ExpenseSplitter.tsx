@@ -70,7 +70,7 @@ const ExpenseSplitter = () => {
         {/* Members Row */}
         <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
           {members.map((m) => (
-            <div key={m.name} className="glass rounded-2xl p-3 min-w-[120px] text-center shrink-0">
+            <div key={m.name} className="glass rounded-3xl p-3 min-w-[120px] text-center shrink-0 neon-border">
               <div className={`w-10 h-10 rounded-full ${m.color} flex items-center justify-center text-sm font-bold text-primary-foreground mx-auto mb-2`}>
                 {m.avatar}
               </div>
