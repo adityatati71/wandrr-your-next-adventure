@@ -64,22 +64,22 @@ const TripDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background grain">
       {/* Hero Image */}
       <div className="relative h-72 overflow-hidden">
         <img src={trip.image} alt={trip.title} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        <Link to="/dashboard" className="absolute top-4 left-4 w-10 h-10 rounded-full glass flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+        <Link to="/dashboard" className="absolute top-4 left-4 w-10 h-10 rounded-2xl glass flex items-center justify-center">
           <MaterialIcon icon="arrow_back" size={20} className="text-foreground" />
         </Link>
-        <button className="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center">
+        <button className="absolute top-4 right-4 w-10 h-10 rounded-2xl glass flex items-center justify-center">
           <MaterialIcon icon="more_horiz" size={20} className="text-foreground" />
         </button>
         <div className="absolute bottom-4 left-4 right-4">
-          <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${trip.status === "Confirmed" ? "bg-success/20 text-success" : "bg-accent/20 text-accent"}`}>
+          <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-xl ${trip.status === "Confirmed" ? "bg-success/30 text-success" : "bg-accent/30 text-accent"}`}>
             {trip.status}
           </span>
-          <h1 className="text-2xl font-bold text-foreground mt-2">{trip.title}</h1>
+          <h1 className="text-2xl font-display font-bold text-foreground mt-2">{trip.title}</h1>
           <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
             <MaterialIcon icon="location_on" size={14} /> {trip.location}
           </p>
@@ -94,40 +94,40 @@ const TripDetail = () => {
             { icon: "groups", label: "Travelers", value: `${trip.travelers} people` },
             { icon: "account_balance_wallet", label: "Budget", value: trip.budget },
           ].map((stat) => (
-            <div key={stat.label} className="glass rounded-2xl p-3 text-center">
+            <div key={stat.label} className="glass rounded-3xl p-3 text-center neon-border">
               <MaterialIcon icon={stat.icon} size={20} className="text-primary mb-1" />
-              <p className="text-xs text-muted-foreground">{stat.label}</p>
-              <p className="text-sm font-semibold text-foreground">{stat.value}</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{stat.label}</p>
+              <p className="text-sm font-display font-semibold text-foreground">{stat.value}</p>
             </div>
           ))}
         </div>
 
         {/* About */}
-        <section className="glass rounded-2xl p-5">
-          <h2 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-            <MaterialIcon icon="info" size={18} className="text-primary" /> About this trip
+        <section className="glass rounded-3xl p-5 neon-border">
+          <h2 className="text-sm font-display font-semibold text-foreground mb-2 flex items-center gap-2">
+            <MaterialIcon icon="info" size={18} className="text-primary" /> about this trip ✈️
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">{trip.description}</p>
         </section>
 
         {/* Itinerary */}
         <section>
-          <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-            <MaterialIcon icon="route" size={22} className="text-primary" /> Itinerary
+          <h2 className="text-lg font-display font-semibold text-foreground mb-4 flex items-center gap-2">
+            <MaterialIcon icon="route" size={22} className="text-primary" /> itinerary 📋
           </h2>
           <div className="space-y-3">
             {trip.itinerary.map((day) => (
-              <div key={day.day} className="glass rounded-2xl p-4">
+              <div key={day.day} className="glass rounded-3xl p-4 neon-border">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">
+                  <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center text-xs font-display font-bold text-primary">
                     {day.day}
                   </div>
-                  <h3 className="text-sm font-semibold text-foreground">{day.title}</h3>
+                  <h3 className="text-sm font-display font-semibold text-foreground">{day.title}</h3>
                 </div>
-                <div className="pl-11 space-y-2">
+                <div className="pl-12 space-y-2">
                   {day.activities.map((activity, i) => (
                     <div key={i} className="flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 shrink-0" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
                       <p className="text-xs text-muted-foreground">{activity}</p>
                     </div>
                   ))}
@@ -138,14 +138,14 @@ const TripDetail = () => {
         </section>
 
         {/* Packing List */}
-        <section className="glass rounded-2xl p-5">
-          <h2 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <MaterialIcon icon="luggage" size={18} className="text-accent" /> Packing List
+        <section className="glass rounded-3xl p-5 neon-border">
+          <h2 className="text-sm font-display font-semibold text-foreground mb-3 flex items-center gap-2">
+            <MaterialIcon icon="luggage" size={18} className="text-accent" /> packing list 🧳
           </h2>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2.5">
             {trip.packingList.map((item) => (
               <label key={item} className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer group">
-                <div className="w-4 h-4 rounded border border-border group-hover:border-primary transition-colors flex items-center justify-center">
+                <div className="w-5 h-5 rounded-lg border border-border group-hover:border-primary group-hover:bg-primary/10 transition-all flex items-center justify-center">
                   <MaterialIcon icon="check" size={12} className="text-transparent group-hover:text-primary transition-colors" />
                 </div>
                 {item}
@@ -156,11 +156,11 @@ const TripDetail = () => {
 
         {/* Action Buttons */}
         <div className="grid grid-cols-2 gap-3 pb-8">
-          <button className="btn-primary-gradient rounded-2xl py-3 text-sm font-semibold flex items-center justify-center gap-2">
-            <MaterialIcon icon="edit" size={18} /> Edit Trip
+          <button className="btn-primary-gradient rounded-2xl py-3.5 text-sm font-semibold flex items-center justify-center gap-2">
+            <MaterialIcon icon="edit" size={18} /> edit trip
           </button>
-          <button className="glass rounded-2xl py-3 text-sm font-semibold text-foreground flex items-center justify-center gap-2 hover:bg-card/80 transition-colors">
-            <MaterialIcon icon="share" size={18} /> Share
+          <button className="glass rounded-2xl py-3.5 text-sm font-semibold text-foreground flex items-center justify-center gap-2 hover:glow-primary transition-all neon-border">
+            <MaterialIcon icon="share" size={18} /> share
           </button>
         </div>
       </main>

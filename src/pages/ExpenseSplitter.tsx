@@ -37,17 +37,17 @@ const ExpenseSplitter = () => {
   const perPerson = total / members.length;
 
   return (
-    <div className="min-h-screen bg-background pb-8">
+    <div className="min-h-screen bg-background pb-8 grain">
       {/* Header */}
       <header className="sticky top-0 z-50 glass-strong px-4 py-3 flex items-center gap-3">
-        <Link to="/dashboard" className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+        <Link to="/dashboard" className="w-10 h-10 rounded-2xl glass flex items-center justify-center">
           <MaterialIcon icon="arrow_back" size={20} className="text-foreground" />
         </Link>
         <div className="flex-1">
-          <h1 className="text-base font-semibold text-foreground">Expense Splitter</h1>
-          <p className="text-xs text-muted-foreground">Amalfi Coast Escape</p>
+          <h1 className="text-base font-display font-semibold text-foreground">expense splitter 💸</h1>
+          <p className="text-xs text-muted-foreground">amalfi coast escape</p>
         </div>
-        <button className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+        <button className="w-10 h-10 rounded-2xl bg-primary/15 flex items-center justify-center hover:glow-primary transition-all">
           <MaterialIcon icon="add" size={20} className="text-primary" />
         </button>
       </header>
